@@ -1,0 +1,59 @@
+:root{
+    --salmon : #EF9D71;
+    --black : #000;
+    --white: #fff;
+    --cyan: #AEDEE0 ;
+    --dsalmon: #532521;
+    --dcyan: #1f2f32 ;
+}
+
+*::selection{
+    background-color: var(--salmon);
+}
+
+body[theme="black"] {
+      background-color: var(--black);
+      color: var(--white);
+    }
+
+body[theme="white"] {
+      background-color: var(--white);
+      color: var(--black);
+    }
+
+body[theme="cyan"] {
+      background-color: var(--cyan);
+      color: var(--dcyan);
+    }
+body[theme="salmon"] {
+      background-color: var(--salmon);
+    //   color: var(--dsalmon);
+    }
+
+@font-face {
+      font-family: "PPNeueMachinaLight";
+      src: url("/font/PPNeueMachina_Light.ttf") format("truetype");
+      font-weight: 300;
+    }
+
+// @keyframes ease-out-elastic {
+//   0% {
+//     transform: scaleY(0.1);
+//   }
+//   100% {
+//     transform: scaleY(1);
+//   }
+// }
+
+@keyframes ease-out-elastic {
+  0%   { transform: scaleY(0.4); }
+  20%  { transform: scaleY(1.2); }  /* overshoot */
+  40%  { transform: scaleY(0.9); }  /* recoil */
+  60%  { transform: scaleY(1.05); } /* second overshoot */
+  80%  { transform: scaleY(0.98); } /* settle */
+  100% { transform: scaleY(1); }
+}
+
+.listelem:hover .imgdiv {
+  animation: ease-out-elastic 0.6s ease-out forwards;
+}
