@@ -1,7 +1,7 @@
 :root {
   --salmon: #EF9D71;
   --black: #000;
-  --white: #fff;
+  --white: #e9e4e4;
   --cyan: #AEDEE0 ;
   --dsalmon: #532521;
   --dcyan: #1f2f32 ;
@@ -39,26 +39,15 @@ body[theme=salmon] {
   src: url("/font/PPNeueMachina_Light.ttf") format("truetype");
   font-weight: 300;
 }
-@keyframes ease-out-elastic {
-  0% {
-    transform: scaleY(0.4);
-  }
-  20% {
-    transform: scaleY(1.2);
-  } /* overshoot */
-  40% {
-    transform: scaleY(0.9);
-  } /* recoil */
-  60% {
-    transform: scaleY(1.05);
-  } /* second overshoot */
-  80% {
-    transform: scaleY(0.98);
-  } /* settle */
-  100% {
-    transform: scaleY(1);
-  }
+body {
+  transition: background-color 0.6s ease-out;
 }
+
 .listelem:hover .imgdiv {
   animation: ease-out-elastic 0.6s ease-out forwards;
+  transform-origin: center;
+}
+
+.vdodiv {
+  clip-path: circle(var(--clip) at 50% 50%);
 }/*# sourceMappingURL=style.css.map */
