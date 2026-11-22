@@ -1,3 +1,5 @@
+gsap.registerPlugin(ScrollTrigger);
+
 function homePageAnimation(){
   // alert("hey")
 
@@ -21,23 +23,23 @@ let tl = gsap.timeline({
 tl.to(".vdodiv",{
 
     '--clip': '0%',
-    ease: Power2,
+    ease: "power2.out",
 },'a')
 
 .to('.slidem',{
     scale: 1.1,
-    ease: Power2,
+    ease: "power2.out",
 },'a')
 
 .to('.row.lft',{
     xPercent: -10,
-    ease: Power4,
+    ease: "power4.out",
     stagger: 0.03,
 },'b')
 
 .to('.row.rgt',{
     xPercent: 10,
-    ease: Power4,
+    ease: "power4.out",
     stagger: 0.04,
 },'b')
 
@@ -71,7 +73,7 @@ t2.to('.box', {
         scrub: .5,
         start: 'top top',
         end: 'bottom center',
-        markers: true,
+        // markers: true,
         
         // pin:true
     },
@@ -105,7 +107,7 @@ gsap.to('.slide',{
     scrub: 0.8,
   },
   xPercent: -200,
-  ease: Power4
+  ease: "power4.out"
 })
 
 
@@ -176,36 +178,62 @@ function teamAnimation(){
 }
 
 function paraAnimation(){
-  let clutter = " "
+  const el = document.querySelector(".textpara");
+  const words = el.textContent.trim().split(/\s+/);
 
-document.querySelector(".textpara")
-.textContent.split("")
-.forEach(function(e){
+  el.innerHTML = words
+    .map(word =>
+      `<span class="word inline-block whitespace-nowrap">${
+        word.split("").map(ch => `<span class="char">${ch}</span>`).join("")
+      }</span>`
+    )
+    .join(" ");   // normal space between words = wrapping works
 
-  if(e === " ") clutter += `<span>&nbsp</span>`
-  clutter += `<span>${e}</span>`
-})
-
-document.querySelector(".textpara").innerHTML = clutter
-
-gsap.set(".textpara span", {opacity: .1})
-gsap.to(".textpara span",{
-  scrollTrigger:{
-    trigger: ".para",
-    // markers: true,
-    start: "top 70%",
-    end: "bottom 90%",
-    scrub: 1,
-  },
-  opacity:1,
-  stagger: .03,
-  ease: "Power4.out"
-})
+  gsap.set(".textpara .char", { opacity: 0.1 });
+  gsap.to(".textpara .char", {
+    scrollTrigger: {
+      trigger: ".para",
+      start: "top 80%",
+      end: "bottom 40%",
+      scrub: 1,
+    },
+    opacity: 1,
+    stagger: 0.03,
+    ease: "none",
+  });
 }
 
-function locomotiveScroll(){
-  const locomotiveScroll = new LocomotiveScroll()
+let lenis;
+
+function smoothScroll(){
+  lenis = new Lenis({
+    lerp: 0.06,            // lower = smoother and slower glide
+    wheelMultiplier: 0.5,  // lower = slower wheel
+    smoothWheel: true,
+  });
+
+  // keep ScrollTrigger in sync with Lenis
+  lenis.on("scroll", ScrollTrigger.update);
+
+  // drive Lenis from GSAP's ticker
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
 }
+
+// function locomotiveScroll(){
+//   try {
+//     new LocomotiveScroll({
+//       lenisOptions: {
+//         wheelMultiplier: 0.35,  // lower = slower wheel (default 1)
+//         lerp: 0.06,            // lower = smoother, more glide (default ~0.1)
+//         smoothWheel: true,
+//       }
+//     });
+//   } catch(e){ console.warn("Locomotive failed", e); }
+// }
+
+
+window.addEventListener("load", () => ScrollTrigger.refresh());
 
 function capsuleAnimation(){
   gsap.to(".capsule:nth-child(2)",{
@@ -239,8 +267,8 @@ function bodyColorChanged(){
 })
 }
 
-locomotiveScroll()
-
+// locomotiveScroll()
+smoothScroll()
 bodyColorChanged()
 homePageAnimation()
 realPageAnimation()
